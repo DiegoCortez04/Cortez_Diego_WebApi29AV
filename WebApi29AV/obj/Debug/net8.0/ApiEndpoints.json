@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "Domain.DTO.UsuarioRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebApi29AV.Controllers.RolController",
     "Method": "GetRols",
     "RelativePath": "Rol",

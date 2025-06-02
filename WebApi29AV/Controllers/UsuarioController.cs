@@ -1,10 +1,12 @@
 ﻿using Domain.DTO;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi29AV.Services.IServices;
 
 namespace WebApi29AV.Controllers
 {
+    [Authorize(Roles = "admin")]
     [ApiController]
     [Route("[controller]")]
     public class UsuarioController : ControllerBase

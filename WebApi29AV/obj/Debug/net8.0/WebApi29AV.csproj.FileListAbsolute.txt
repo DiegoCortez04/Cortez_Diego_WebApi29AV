@@ -137,3 +137,4 @@ C:\Users\cdieg\source\repos\WebApi29AV\WebApi29AV\bin\Debug\net8.0\runtimes\win\
 C:\Users\cdieg\source\repos\WebApi29AV\WebApi29AV\bin\Debug\net8.0\Domain.dll
 C:\Users\cdieg\source\repos\WebApi29AV\WebApi29AV\bin\Debug\net8.0\Domain.pdb
 C:\Users\cdieg\source\repos\WebApi29AV\WebApi29AV\obj\Debug\net8.0\WebApi29AV.sourcelink.json
+C:\Users\cdieg\source\repos\WebApi29AV\WebApi29AV\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

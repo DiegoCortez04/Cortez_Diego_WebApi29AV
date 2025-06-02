@@ -41,8 +41,7 @@ namespace WebApi29AV.Services.Services
             {
                 // Busca el usuario y también carga el rol relacionado
                 Usuario usuario = await _context.Usuarios
-                    .Include(u => u.Roles)
-                    .FirstOrDefaultAsync(x => x.PkUsuario == id);
+                    .Include(u => u.Roles).FirstOrDefaultAsync(x => x.PkUsuario == id);
 
                 // Devuelve el usuario encontrado
                 return new Response<Usuario>(usuario);
@@ -70,7 +69,7 @@ namespace WebApi29AV.Services.Services
                 // Agrega el usuario al contexto para que se guarde en la BD
                 _context.Usuarios.Add(usuario);
 
-                // Guarda los cambios en la base de datos (persistir creación)
+                // Guarda los cambios en la base de datos
                 await _context.SaveChangesAsync();
 
                 // Devuelve el usuario creado
