@@ -1,53 +1,58 @@
-﻿using Domain.DTO;
-using Domain.Entities;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using WebApi29AV.Context;
+using WebApi29AV.Services;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+namespace WebApi29AV.Controllers
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IConfiguration _configuration;
-
-    public AuthController(ApplicationDbContext context, IConfiguration configuration)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
-        _context = context;
-        _configuration = configuration;
+        private readonly ApplicationDbContext _context;
+        private readonly JwtService _jwtService;
+
+        public AuthController(ApplicationDbContext context, JwtService jwtService)
+        {
+            _context = context;
+            _jwtService = jwtService;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var user = await _context.Usuarios
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == request.Password);
+
+            if (user == null)
+                return Unauthorized("Credenciales incorrectas");
+
+            var token = _jwtService.GenerateToken(user, user.Roles?.Nombre ?? "User");
+
+            return Ok(new { token });
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult Me()
+        {
+            var username = User.Identity?.Name ?? "Desconocido";
+            var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "Sin rol";
+
+            return Ok(new
+            {
+                usuario = username,
+                rol = role
+            });
+        }
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UsuarioRequest login)
+    public class LoginRequest
     {
-        var usuario = await _context.Usuarios
-            .FirstOrDefaultAsync(u => u.Username == login.Username && u.Password == login.Password);
-
-        if (usuario == null)
-            return Unauthorized("Credenciales inválidas.");
-
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, usuario.PkUsuario.ToString()),
-            new Claim(ClaimTypes.Name, usuario.Username),
-            new Claim(ClaimTypes.Role, "admin")
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: creds
-        );
-
-        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

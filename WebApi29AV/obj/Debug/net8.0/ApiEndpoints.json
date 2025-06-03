@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "login",
-        "Type": "Domain.DTO.UsuarioRequest",
+        "Type": "Domain.Entities.Usuario",
         "IsRequired": true
       }
     ],

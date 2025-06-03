@@ -1,14 +1,16 @@
 ﻿using Domain.DTO;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi29AV.Services.IServices;
 
 namespace WebApi29AV.Controllers
 {
+    [Authorize(Roles = "sa")] // Acceso para usuarios con rol "sa"
     [ApiController]
     [Route("[controller]")]
-    public class RolController : Controller
+    public class RolController : ControllerBase
     {
         private readonly IRolServices _rolServices;
 
