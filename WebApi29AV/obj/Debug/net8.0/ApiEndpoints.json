@@ -1,6 +1,6 @@
 [
   {
-    "ContainingType": "AuthController",
+    "ContainingType": "WebApi29AV.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/Auth/login",
     "HttpMethod": "POST",
@@ -8,11 +8,21 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "login",
-        "Type": "Domain.Entities.Usuario",
+        "Name": "request",
+        "Type": "WebApi29AV.Controllers.LoginRequest",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApi29AV.Controllers.AuthController",
+    "Method": "Me",
+    "RelativePath": "api/Auth/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
